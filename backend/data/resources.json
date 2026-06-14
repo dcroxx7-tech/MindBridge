@@ -1,0 +1,122 @@
+[
+  {
+    "name": "iCall Psychosocial Helpline",
+    "country": "India",
+    "languages": ["English", "Hindi", "Marathi"],
+    "phone": "9152987821",
+    "hours": "Mon-Sat 8am-10pm IST",
+    "type": "helpline",
+    "cost": "free",
+    "crisis": true,
+    "url": "https://icallhelpline.org",
+    "description": "Professional counseling by trained psychologists at TISS Mumbai."
+  },
+  {
+    "name": "Vandrevala Foundation",
+    "country": "India",
+    "languages": ["English", "Hindi", "Gujarati", "Marathi"],
+    "phone": "1860-2662-345",
+    "hours": "24/7",
+    "type": "helpline",
+    "cost": "free",
+    "crisis": true,
+    "url": "https://www.vandrevalafoundation.com",
+    "description": "24/7 multilingual crisis helpline and counseling service."
+  },
+  {
+    "name": "NIMHANS",
+    "country": "India",
+    "languages": ["English", "Hindi", "Kannada"],
+    "phone": "080-46110007",
+    "hours": "Mon-Sat 9am-5pm IST",
+    "type": "hospital",
+    "cost": "low-cost",
+    "crisis": true,
+    "url": "https://nimhans.ac.in",
+    "description": "National Institute of Mental Health and Neurosciences — premier mental health hospital."
+  },
+  {
+    "name": "AASRA",
+    "country": "India",
+    "languages": ["English", "Hindi"],
+    "phone": "9820466726",
+    "hours": "24/7",
+    "type": "helpline",
+    "cost": "free",
+    "crisis": true,
+    "url": "http://www.aasra.info",
+    "description": "Crisis intervention centre for the depressed and suicidal."
+  },
+  {
+    "name": "MindPeers",
+    "country": "India",
+    "languages": ["English", "Hindi"],
+    "phone": null,
+    "hours": "Flexible scheduling",
+    "type": "therapy_platform",
+    "cost": "paid",
+    "crisis": false,
+    "url": "https://www.mindpeers.co",
+    "description": "Affordable online therapy with licensed therapists."
+  },
+  {
+    "name": "Practo Mental Health",
+    "country": "India",
+    "languages": ["English", "Hindi", "Tamil", "Telugu", "Bengali"],
+    "phone": null,
+    "hours": "Flexible scheduling",
+    "type": "therapy_platform",
+    "cost": "paid",
+    "crisis": false,
+    "url": "https://www.practo.com",
+    "description": "Book appointments with psychiatrists and psychologists."
+  },
+  {
+    "name": "Befrienders Worldwide",
+    "country": "International",
+    "languages": ["English"],
+    "phone": null,
+    "hours": "24/7",
+    "type": "directory",
+    "cost": "free",
+    "crisis": true,
+    "url": "https://www.befrienders.org",
+    "description": "Global directory of emotional support helplines in 40+ countries."
+  },
+  {
+    "name": "Crisis Text Line",
+    "country": "US",
+    "languages": ["English", "Spanish"],
+    "phone": "Text HELLO to 741741",
+    "hours": "24/7",
+    "type": "helpline",
+    "cost": "free",
+    "crisis": true,
+    "url": "https://www.crisistextline.org",
+    "description": "Free crisis support via text message."
+  },
+  {
+    "name": "BetterHelp",
+    "country": "International",
+    "languages": ["English"],
+    "phone": null,
+    "hours": "Flexible scheduling",
+    "type": "therapy_platform",
+    "cost": "paid",
+    "crisis": false,
+    "url": "https://www.betterhelp.com",
+    "description": "Online therapy with licensed therapists. Financial aid available."
+  },
+  {
+    "name": "7 Cups",
+    "country": "International",
+    "languages": ["English"],
+    "phone": null,
+    "hours": "24/7",
+    "type": "peer_support",
+    "cost": "free",
+    "crisis": false,
+    "url": "https://www.7cups.com",
+    "description": "Free emotional support from trained volunteer listeners."
+  }
+]
