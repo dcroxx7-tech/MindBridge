@@ -263,8 +263,8 @@ export default function AgentPlayground() {
                   : "text-slate-500 border border-transparent hover:text-slate-300 hover:bg-white/[0.04]"
               }`}
             >
-              <Icon className="h-4 w-4" />
-              <span className="hidden sm:inline">{tab.label}</span>
+              <Icon className="h-4 w-4 flex-shrink-0" />
+              <span className="hidden sm:inline-block text-center leading-tight">{tab.label}</span>
             </button>
           );
         })}
