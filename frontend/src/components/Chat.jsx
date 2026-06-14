@@ -130,23 +130,23 @@ How are you holding up today? What's on your mind?`,
       </div>
 
       {/* Top Banner Header */}
-      <div className="relative bg-surface/60 backdrop-blur-xl p-4 rounded-t-2xl border border-white/[0.06] shadow-2xl shadow-indigo-950/20 flex justify-between items-center flex-shrink-0 z-10">
+      <div className="relative bg-white/[0.03] backdrop-blur-2xl p-4 rounded-t-3xl border-b border-white/[0.08] shadow-[0_10px_30px_rgba(0,0,0,0.2)] flex justify-between items-center flex-shrink-0 z-10">
         {/* Subtle top gradient line */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent rounded-t-2xl" />
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent rounded-t-3xl" />
         
         <div className="flex items-center space-x-3">
-          <div className="relative p-2.5 bg-indigo-500/10 text-primary-light rounded-xl ring-1 ring-indigo-500/20">
+          <div className="relative p-2.5 bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-indigo-300 rounded-2xl border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
             <MindBridgeLogo size="sm" />
-            <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-emerald-400 rounded-full border-2 border-surface animate-pulse" />
+            <div className="absolute -bottom-1 -right-1 h-3 w-3 bg-emerald-400 rounded-full border-2 border-[#0a0a1e] animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
           </div>
           <div>
-            <h2 className="font-bold text-white text-sm sm:text-base tracking-tight">CompanionAI Chat</h2>
-            <p className="text-xs text-text-light flex items-center mt-0.5">
+            <h2 className="font-bold text-white text-base sm:text-lg tracking-tight drop-shadow-md">CompanionAI</h2>
+            <p className="text-xs text-indigo-200/70 flex items-center mt-0.5 font-medium">
               <span className="relative flex h-1.5 w-1.5 mr-1.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
               </span>
-              CBT Support Active
+              Active Session
             </p>
           </div>
         </div>
@@ -161,7 +161,7 @@ How are you holding up today? What's on your mind?`,
       </div>
 
       {/* Message Area */}
-      <div className="relative flex-1 bg-surface/40 backdrop-blur-xl border-x border-white/[0.06] p-4 sm:p-6 overflow-y-auto space-y-5 shadow-xl min-h-0 z-10" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(99,102,241,0.15) transparent' }}>
+      <div data-lenis-prevent="true" className="relative flex-1 bg-surface/40 backdrop-blur-xl border-x border-white/[0.06] p-4 sm:p-6 overflow-y-auto space-y-5 shadow-xl min-h-0 z-10" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(99,102,241,0.15) transparent' }}>
         
         {messages.map((msg, idx) => (
           <div
@@ -181,10 +181,10 @@ How are you holding up today? What's on your mind?`,
             {/* Message Bubble Container */}
             <div className="flex-1 flex flex-col items-stretch">
               <div
-                className={`p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap transition-all duration-200 ${
+                className={`p-4 rounded-[22px] text-sm leading-relaxed whitespace-pre-wrap transition-all duration-300 ${
                   msg.role === "user"
-                    ? "bg-gradient-to-br from-indigo-600 via-indigo-500 to-violet-500 text-white rounded-tr-sm shadow-xl shadow-indigo-600/20 ring-1 ring-indigo-400/20"
-                    : "bg-[#0a0a1e]/70 backdrop-blur-sm text-white/95 border border-white/[0.08] rounded-tl-sm shadow-lg ring-1 ring-white/[0.03]"
+                    ? "bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-tr-sm shadow-[0_8px_20px_rgba(99,102,241,0.25)] border border-indigo-400/30"
+                    : "bg-white/5 backdrop-blur-2xl text-slate-100 border border-white/10 rounded-tl-sm shadow-[0_8px_25px_rgba(0,0,0,0.15)] ring-1 ring-white/5"
                 }`}
               >
                 {msg.content}
@@ -318,9 +318,7 @@ How are you holding up today? What's on your mind?`,
       </div>
 
       {/* Input area */}
-      <form onSubmit={handleSendMessage} className="relative bg-surface/60 backdrop-blur-xl p-3 rounded-b-2xl border border-white/[0.06] border-t-0 shadow-2xl shadow-indigo-950/20 flex items-center space-x-2.5 flex-shrink-0 z-10">
-        {/* Bottom gradient line */}
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent rounded-b-2xl" />
+      <form onSubmit={handleSendMessage} className="relative bg-white/[0.02] backdrop-blur-2xl p-4 rounded-b-3xl border-t border-white/[0.08] shadow-[0_-10px_30px_rgba(0,0,0,0.2)] flex items-center space-x-3 flex-shrink-0 z-10">
         
         <input
           type="text"
@@ -332,16 +330,16 @@ How are you holding up today? What's on your mind?`,
           placeholder={
             isCrisisTriggered
               ? "AI chat suspended for safety. Please use resources."
-              : "Type a supportive message or describe how you feel..."
+              : "Type a supportive message..."
           }
-          className="flex-1 py-3 px-4 text-sm border border-white/[0.08] text-white rounded-xl bg-white/[0.03] focus:bg-white/[0.05] focus:ring-2 focus:ring-indigo-500/25 focus:border-indigo-500/40 focus:shadow-lg focus:shadow-indigo-500/5 focus:outline-none transition-all duration-300 placeholder:text-slate-500"
+          className="flex-1 py-3.5 px-5 text-sm border border-white/[0.08] text-white rounded-full bg-white/[0.04] focus:bg-white/[0.08] focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/50 shadow-inner focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] focus:outline-none transition-all duration-300 placeholder:text-slate-500/80"
         />
         <button
           type="submit"
           disabled={!inputText.trim() || loading || isCrisisTriggered}
-          className="group relative bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:from-white/[0.05] disabled:to-white/[0.05] disabled:text-text-light text-white p-3 rounded-xl shadow-lg shadow-indigo-500/15 hover:shadow-xl hover:shadow-indigo-500/25 transition-all duration-300 flex items-center justify-center flex-shrink-0 disabled:shadow-none"
+          className="group relative bg-gradient-to-br from-indigo-500 to-violet-600 hover:from-indigo-400 hover:to-violet-500 disabled:from-white/5 disabled:to-white/5 disabled:text-slate-500 text-white p-3.5 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] transition-all duration-300 flex items-center justify-center flex-shrink-0 disabled:shadow-none"
         >
-          <Send className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          <Send className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </button>
       </form>
 

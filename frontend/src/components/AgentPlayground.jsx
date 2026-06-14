@@ -242,14 +242,14 @@ export default function AgentPlayground() {
   }, [country, costFilter, activeTab]);
 
   return (
-    <div className="bg-white/[0.01] backdrop-blur-md rounded-3xl border border-white/[0.06] shadow-2xl relative overflow-hidden group hover:border-indigo-500/15 transition-all duration-300">
+    <div className="bg-white/[0.02] backdrop-blur-2xl rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden group hover:border-indigo-500/30 transition-all duration-500">
       
       {/* Tab/Stepper Bar */}
-      <div className="flex border-b border-white/[0.04] bg-white/[0.02]">
+      <div className="flex flex-col sm:flex-row p-2 gap-2 border-b border-white/[0.08] bg-white/[0.03]">
         {[
-          { id: 1, label: "1. SentinelAI Monitor", icon: Activity, activeColor: "text-amber-400 border-amber-400/40 bg-amber-400/5" },
-          { id: 2, label: "2. CompanionAI CBT", icon: MessageCircle, activeColor: "text-indigo-400 border-indigo-400/40 bg-indigo-400/5" },
-          { id: 3, label: "3. BridgeAI Router", icon: Network, activeColor: "text-indigo-300 border-indigo-300/40 bg-indigo-300/5" }
+          { id: 1, label: "1. SentinelAI Monitor", icon: Activity, activeColor: "text-amber-400 border border-amber-400/30 bg-amber-400/10 shadow-[0_0_15px_rgba(251,191,36,0.15)]" },
+          { id: 2, label: "2. CompanionAI CBT", icon: MessageCircle, activeColor: "text-indigo-400 border border-indigo-400/30 bg-indigo-400/10 shadow-[0_0_15px_rgba(129,140,248,0.15)]" },
+          { id: 3, label: "3. BridgeAI Router", icon: Network, activeColor: "text-violet-300 border border-violet-400/30 bg-violet-400/10 shadow-[0_0_15px_rgba(167,139,250,0.15)]" }
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -257,10 +257,10 @@ export default function AgentPlayground() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 flex items-center justify-center space-x-2 py-4 text-xs font-bold font-display border-b-2 transition duration-200 cursor-pointer ${
+              className={`flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl text-sm font-bold font-display transition-all duration-300 cursor-pointer ${
                 isActive 
                   ? tab.activeColor
-                  : "text-slate-500 border-transparent hover:text-slate-300 hover:bg-white/[0.01]"
+                  : "text-slate-500 border border-transparent hover:text-slate-300 hover:bg-white/[0.04]"
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -373,10 +373,11 @@ export default function AgentPlayground() {
                 {sentinelStatus === "idle" && (
                   <button
                     onClick={runSentinelAnalysis}
-                    className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-600/10 hover:shadow-indigo-600/25 transition duration-200 flex items-center justify-center space-x-2 text-xs cursor-pointer"
+                    className="group relative w-full bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-bold py-3.5 rounded-2xl shadow-[0_0_20px_rgba(99,102,241,0.25)] hover:shadow-[0_0_35px_rgba(99,102,241,0.4)] transition-all duration-300 flex items-center justify-center space-x-2 text-sm overflow-hidden cursor-pointer border border-indigo-400/30"
                   >
-                    <Play className="h-3.5 w-3.5" />
-                    <span>Run SentinelAI Analysis Scan</span>
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-2xl" />
+                    <Play className="h-4 w-4 relative z-10 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="relative z-10">Run SentinelAI Analysis Scan</span>
                   </button>
                 )}
 
@@ -628,7 +629,7 @@ export default function AgentPlayground() {
                   </div>
                   
                   {/* Messages container */}
-                  <div className="flex-1 p-4 overflow-y-auto space-y-3">
+                  <div data-lenis-prevent="true" className="flex-1 p-4 overflow-y-auto space-y-3">
                     {chatMessages.map((msg, i) => (
                       <div key={i} className={`flex items-start max-w-[85%] ${msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"}`}>
                         {msg.role !== "user" && (

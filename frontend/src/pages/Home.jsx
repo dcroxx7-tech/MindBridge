@@ -1,4 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Activity, MessageCircle, Network, Shield, ArrowRight } from "lucide-react";
@@ -9,10 +14,35 @@ import HeroOrb from "../components/HeroOrb";
 
 export default function Home() {
   const { user } = useAuth();
+  const container = useRef();
 
+  useGSAP(() => {
+    // Hero Section Animation
+    gsap.from(".hero-content > *", {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.15,
+      ease: "power3.out",
+      delay: 0.2
+    });
+
+    // Architecture Section ScrollTrigger Animation
+    gsap.from(".stagger-in > div", {
+      scrollTrigger: {
+        trigger: "#architecture",
+        start: "top 80%",
+      },
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out"
+    });
+  }, { scope: container });
 
   return (
-    <div className="bg-background min-h-screen text-white relative overflow-hidden">
+    <div ref={container} className="bg-background min-h-screen text-white relative overflow-hidden">
 
       {/* Hero Section */}
       <div className="relative min-h-[95vh] flex items-center border-b border-white/[0.04] py-12 lg:py-0">
@@ -36,7 +66,7 @@ export default function Home() {
                 <HeroOrb size={450} />
               </div>
 
-              <div className="relative z-10 space-y-8">
+              <div className="relative z-10 space-y-8 hero-content">
                 {/* Brand Mark */}
                 <div className="flex items-center space-x-3">
                   <MindBridgeLogo size="lg" />

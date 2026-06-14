@@ -7,7 +7,10 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr
-
+from google.oauth2 import id_token
+from google.auth.transport import requests
+import secrets
+import string
 from database import get_db
 from models.user import User
 
@@ -29,6 +32,10 @@ class UserSignup(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+class GoogleLoginData(BaseModel):
+    credential: str
+    client_id: str
 
 class Token(BaseModel):
     access_token: str
@@ -155,6 +162,59 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
         "email": user.email,
         "id": user.id
     }
+
+@router.post("/google", response_model=Token)
+def google_login(data: GoogleLoginData, db: Session = Depends(get_db)):
+    try:
+        # Verify the token
+        idinfo = id_token.verify_oauth2_token(data.credential, requests.Request(), data.client_id)
+        
+        email = idinfo['email']
+        name = idinfo.get('name', email.split('@')[0])
+        
+        # Check if user exists
+        user = db.query(User).filter(User.email == email).first()
+        
+        if not user:
+            # Create a new user with a random strong password since it's required
+            alphabet = string.ascii_letters + string.digits + string.punctuation
+            random_password = ''.join(secrets.choice(alphabet) for i in range(32))
+            hashed_pw = get_password_hash(random_password)
+            
+            # Ensure username is unique
+            base_username = name.replace(" ", "").lower()
+            username = base_username
+            counter = 1
+            while db.query(User).filter(User.username == username).first():
+                username = f"{base_username}{counter}"
+                counter += 1
+                
+            user = User(
+                username=username,
+                email=email,
+                hashed_password=hashed_pw,
+                country="India", # Default
+                language="English" # Default
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+            
+        token_data = {"sub": str(user.id), "username": user.username}
+        access_token = create_access_token(data=token_data)
+        
+        return {
+            "access_token": access_token, 
+            "token_type": "bearer",
+            "username": user.username,
+            "email": user.email,
+            "id": user.id
+        }
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid Google token: {str(e)}"
+        )
 
 @router.get("/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_current_user)):

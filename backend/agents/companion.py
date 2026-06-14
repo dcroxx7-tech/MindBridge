@@ -10,7 +10,9 @@ from typing import List, Dict, Tuple
 CRISIS_KEYWORDS = [
     "suicide", "kill myself", "end my life", "self harm", "hurt myself", 
     "don't want to live", "dont want to live", "khatam kar lun", 
-    "jeena nahi chahta", "mar jaana chahta hun", "mar jana chahta"
+    "jeena nahi chahta", "mar jaana chahta hun", "mar jana chahta",
+    "muje marna hai", "mujhe marna hai", "marna chahta", "marne ka mann",
+    "khatam karna", "khatam ho jana"
 ]
 
 CRISIS_RESPONSE = """I hear you, and I care about you. Please reach out to a counselor right now:
@@ -21,19 +23,18 @@ CRISIS_RESPONSE = """I hear you, and I care about you. Please reach out to a cou
 
 You are not alone. A real person is waiting to help."""
 
-CBT_SYSTEM_PROMPT = """You are CompanionAI, a warm, compassionate, and culturally sensitive mental health support agent.
-Your purpose is to support the user using Cognitive Behavioral Therapy (CBT) techniques, active listening, and grounding exercises.
+CBT_SYSTEM_PROMPT = """You are CompanionAI, a highly specialized, warm, compassionate, and culturally sensitive mental health support agent based on Cognitive Behavioral Therapy (CBT).
 
-Core Guidelines:
-1. Show deep empathy, warmth, and active listening. Validate the user's feelings.
-2. Use CBT techniques to help the user identify and reframe negative thought patterns (e.g. catastrophizing, black-and-white thinking).
-3. Offer concrete, gentle exercises when appropriate (e.g. box breathing, 5-4-3-2-1 grounding method, journaling prompts).
-4. Keep responses concise and readable (2-3 short paragraphs max).
-5. ALWAYS write in the user's chosen language (Hindi, English, or mixed hinglish).
-6. NEVER diagnose any mental or physical conditions.
-7. NEVER prescribe or recommend medications.
-8. NEVER state that you are a licensed therapist or a replacement for professional human help.
-9. If the user mentions crisis, self-harm, or suicide, you must not converse — stop and provide direct helpline numbers immediately.
+Your core purpose is to assist the user by utilizing active listening, empathetic validation, and structured CBT techniques to help them navigate emotional distress.
+
+CRITICAL INSTRUCTIONS & ACCURACY GUIDELINES:
+1. Deep Empathy & Validation: Always start by actively validating the user's emotional state. Make them feel heard and safe.
+2. CBT Reframing: Gently help the user identify cognitive distortions (e.g., Catastrophizing, All-or-Nothing thinking, Overgeneralization). Ask guiding questions to help them challenge these thoughts objectively.
+3. Grounding & De-escalation: If the user feels overwhelmed or anxious, suggest concrete, evidence-based grounding techniques (e.g., 5-4-3-2-1 method, 4-7-8 breathing, progressive muscle relaxation).
+4. Professional Boundaries: You are an AI, NOT a licensed human therapist. NEVER diagnose any mental or physical conditions. NEVER prescribe or recommend medications or specific treatments.
+5. Absolute Safety: If the user mentions any form of self-harm, suicide, or crisis, you MUST immediately stop therapeutic conversation and direct them to seek emergency professional help. Do not attempt to talk them out of it yourself.
+6. Tone & Format: Keep your responses warm, non-judgmental, and concise (2-3 short paragraphs max). Avoid being overly clinical or robotic.
+7. Language Matching: ALWAYS write in the language the user prefers (Hindi, English, or conversational Hinglish). Mirror their tone to build rapport.
 """
 
 def check_crisis(message: str) -> Tuple[bool, str]:
@@ -76,7 +77,46 @@ async def get_response(
     # 2. Call LLM API if key is present
     anthropic_key = api_key or os.getenv("ANTHROPIC_API_KEY")
     openai_key = os.getenv("OPENAI_API_KEY")
+    github_key = os.getenv("GITHUB_TOKEN")
     
+    if github_key:
+        try:
+            headers = {
+                "Authorization": f"Bearer {github_key}",
+                "Content-Type": "application/json",
+                "Accept": "application/vnd.github+json",
+                "X-GitHub-Api-Version": "2022-11-28"
+            }
+            
+            messages = [{"role": "system", "content": CBT_SYSTEM_PROMPT + f"\nUser info: Country={user_context.get('country', 'India')}, Language={user_context.get('language', 'English')}."}]
+            for msg in history[-10:]:
+                if msg["role"] in ["user", "assistant", "system"]:
+                    messages.append({"role": msg["role"], "content": msg["content"]})
+            messages.append({"role": "user", "content": user_message})
+            
+            payload = {
+                "model": "gpt-4o",
+                "messages": messages,
+                "max_tokens": 500,
+                "temperature": 0.7
+            }
+            
+            async with httpx.AsyncClient() as client:
+                resp = await client.post(
+                    "https://models.inference.ai.azure.com/chat/completions",
+                    headers=headers,
+                    json=payload,
+                    timeout=15.0
+                )
+                if resp.status_code == 200:
+                    data = resp.json()
+                    response_text = data["choices"][0]["message"]["content"]
+                    return response_text, False, should_escalate
+                else:
+                    print(f"GitHub API error: {resp.status_code} - {resp.text}")
+        except Exception as e:
+            print(f"Exception during GitHub call: {e}")
+
     if anthropic_key:
         try:
             headers = {

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from "../context/AuthContext";
 import { Mail, Lock, User, Globe, MessageSquare } from "lucide-react";
 import MindBridgeLogo from "../components/MindBridgeLogo";
 import ParticleField from "../components/ParticleField";
 
 export default function Login() {
-  const { login, signup } = useAuth();
+  const { login, signup, googleLogin } = useAuth();
   const navigate = useNavigate();
   
   const [isSignUp, setIsSignUp] = useState(false);
@@ -35,6 +36,21 @@ export default function Login() {
     } catch (err) {
       console.error(err);
       setError(err || "An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setLoading(true);
+    setError("");
+    try {
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "your-google-client-id-here";
+      await googleLogin(credentialResponse.credential, clientId);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      setError(err || "Google Authentication failed.");
     } finally {
       setLoading(false);
     }
@@ -72,6 +88,25 @@ export default function Login() {
             {error}
           </div>
         )}
+
+        <div className="mb-6 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              setError("Google Login Failed");
+            }}
+            theme="filled_black"
+            text={isSignUp ? "signup_with" : "signin_with"}
+            shape="rectangular"
+            width="350"
+          />
+        </div>
+
+        <div className="flex items-center mb-6">
+          <div className="flex-1 border-t border-white/[0.08]"></div>
+          <span className="px-3 text-xs text-slate-500 uppercase tracking-wider font-semibold">Or</span>
+          <div className="flex-1 border-t border-white/[0.08]"></div>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           

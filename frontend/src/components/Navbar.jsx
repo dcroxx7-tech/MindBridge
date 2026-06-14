@@ -87,10 +87,11 @@ export default function Navbar() {
               {/* Universal Emergency Help button — opens CrisisAlert overlay */}
               <button
                 onClick={() => setShowCrisisAlert(true)}
-                className="flex items-center space-x-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200"
+                className="group relative flex items-center space-x-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-400/50 text-red-400 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 shadow-[0_0_15px_rgba(239,68,68,0.15)] hover:shadow-[0_0_25px_rgba(239,68,68,0.3)]"
               >
-                <AlertTriangle className="h-4 w-4" />
-                <span>Emergency Help</span>
+                <div className="absolute inset-0 rounded-xl bg-red-500/5 animate-pulse"></div>
+                <AlertTriangle className="h-4 w-4 relative z-10" />
+                <span className="relative z-10">Emergency Help</span>
               </button>
  
               {user ? (

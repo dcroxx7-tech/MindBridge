@@ -64,6 +64,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const googleLogin = async (credential, clientId) => {
+    try {
+      const response = await api.post("/auth/google", { credential, client_id: clientId });
+      const { access_token } = response.data;
+      localStorage.setItem("token", access_token);
+      setToken(access_token);
+      
+      const userResponse = await api.get("/auth/me");
+      setUser(userResponse.data);
+      return userResponse.data;
+    } catch (error) {
+      throw error.response?.data?.detail || "Google Login failed. Please try again.";
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -79,6 +94,7 @@ export const AuthProvider = ({ children }) => {
     token,
     loading,
     login,
+    googleLogin,
     signup,
     logout,
     updateUserProfile

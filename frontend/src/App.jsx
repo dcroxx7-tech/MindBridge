@@ -11,6 +11,8 @@ import Resources from "./components/Resources";
 import Profile from "./pages/Profile";
 import PrivacyTransparency from "./pages/PrivacyTransparency";
 
+import SmoothScroll from "./components/SmoothScroll";
+
 // Helper component for protecting private routes
 const ProtectedRoute = ({ children }) => {
   const { token, loading } = useAuth();
@@ -37,7 +39,8 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-background text-text flex flex-col font-sans relative overflow-hidden">
+        <SmoothScroll>
+          <div className="min-h-screen bg-background text-text flex flex-col font-sans relative overflow-hidden">
           
           {/* Universal Ambient Backdrop System */}
           <div className="fixed inset-0 pointer-events-none z-0">
@@ -95,6 +98,7 @@ function App() {
           </div>
         </div>
       </div>
+        </SmoothScroll>
       </BrowserRouter>
     </AuthProvider>
   );
