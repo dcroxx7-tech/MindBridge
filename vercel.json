@@ -1,23 +1,12 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "backend/main.py",
-      "use": "@vercel/python"
+  "experimentalServices": {
+    "frontend": {
+      "root": "frontend",
+      "routePrefix": "/"
     },
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/vite"
+    "backend": {
+      "root": "backend",
+      "routePrefix": "/api"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "backend/main.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend/$1"
-    }
-  ]
+  }
 }
